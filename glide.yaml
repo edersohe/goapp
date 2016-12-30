@@ -1,0 +1,15 @@
+package: bitbucket.org/edersohe/app
+import:
+- package: github.com/labstack/echo
+  version: ~3.0.3
+- package: github.com/sirupsen/logrus
+  version: ~0.11.0
+- package: github.com/eclipse/paho.mqtt.golang
+  version: ~1.0.0
+- package: github.com/spf13/viper
+- package: github.com/gorilla/websocket
+  version: ~1.1.0
+- package: github.com/GoRethink/gorethink
+  version: ~3.0.0
+- package: github.com/joho/godotenv
+  version: ~1.0.0
