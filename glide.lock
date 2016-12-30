@@ -1,8 +1,10 @@
 hash: 93168e3e2a5d0fc0d7b92c4ce1fca89f008ec374c42bda909480f217498c649e
-updated: 2016-12-29T20:26:41.84827691-06:00
+updated: 2016-12-29T23:01:03.678754662-06:00
 imports:
 - name: github.com/cenk/backoff
   version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
+- name: github.com/dgrijalva/jwt-go
+  version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
 - name: github.com/eclipse/paho.mqtt.golang
   version: 45f9b18f4864c81d49c3ed01e5faec9eeb05de31
   subpackages:
@@ -34,11 +36,15 @@ imports:
   version: a01a834e1654b4c9ca5b3ad05159445cc9c7ad08
 - name: github.com/labstack/echo
   version: 8d504c1b699c757b267255c53b3e5219f9974abc
+  subpackages:
+  - middleware
 - name: github.com/labstack/gommon
   version: c8c07aa087422c146b86d2f79556b450a8e630a1
   subpackages:
+  - bytes
   - color
   - log
+  - random
 - name: github.com/magiconair/properties
   version: 9c47895dc1ce54302908ab8a43385d1f5df2c11c
 - name: github.com/mattn/go-colorable
@@ -51,10 +57,10 @@ imports:
   version: df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d
 - name: github.com/pelletier/go-toml
   version: 439fbba1f887c286024370cb4f281ba815c4c7d7
-- name: github.com/sirupsen/logrus
-  version: d26492970760ca5d33129d2d799e34be5c4782eb
 - name: github.com/Sirupsen/logrus
   version: 881bee4e20a5d11a6a88a5667c6f292072ac1963
+- name: github.com/sirupsen/logrus
+  version: d26492970760ca5d33129d2d799e34be5c4782eb
 - name: github.com/spf13/afero
   version: 90dd71edc4d0a8b3511dc12ea15d617d03be09e0
   subpackages:

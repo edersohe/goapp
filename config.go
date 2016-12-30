@@ -5,6 +5,7 @@ import (
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
 )
@@ -21,13 +22,16 @@ func config() {
 
 	e.Logger.SetLevel(log.Lvl(viper.GetInt("LOG_LEVEL")))
 
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
 	if err := godotenv.Load(); err != nil {
 		e.Logger.Warn("Error loading .env file")
 	}
 
 	viper.AutomaticEnv()
 	viper.SetDefault("PORT", "5000")
-	viper.SetDefault("LOG_LEVEL", 1)
+	viper.SetDefault("LOG_LEVEL", 5)
 	viper.SetDefault("RETHINKDB_URL", nil)
 	viper.SetDefault("RETHINKDB_DATABASE", nil)
 	viper.SetDefault("RETHINKDB_USERNAME", nil)
@@ -66,7 +70,5 @@ func config() {
 			e.Logger.Fatal(token.Error())
 		}
 	}
-
-	e.Logger.Fatal(e.Start(":" + viper.GetString("PORT")))
 
 }
