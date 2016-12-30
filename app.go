@@ -6,5 +6,5 @@ func main() {
 	config()
 	routes("")
 
-	e.Logger.Fatal(e.Start(":" + viper.GetString("PORT")))
+	log.Fatal(e.Start(":" + viper.GetString("PORT")))
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/labstack/gommon/log"
+	glog "github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
 )
 
@@ -14,20 +14,17 @@ var (
 	db   *r.Session
 	e    *echo.Echo
 	mqtt MQTT.Client
+	log  echo.Logger
 )
 
 func config() {
 
 	e = echo.New()
 
-	e.Logger.SetLevel(log.Lvl(viper.GetInt("LOG_LEVEL")))
-
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	if err := godotenv.Load(); err != nil {
-		e.Logger.Warn("Error loading .env file")
-	}
+	log = e.Logger
 
 	viper.AutomaticEnv()
 	viper.SetDefault("PORT", "5000")
@@ -39,6 +36,12 @@ func config() {
 	viper.SetDefault("MQTT_URL", nil)
 	viper.SetDefault("MQTT_CLIENT_ID", nil)
 
+	log.SetLevel(glog.Lvl(viper.GetInt("LOG_LEVEL")))
+
+	if err := godotenv.Load(); err != nil {
+		log.Warn("Error loading .env file")
+	}
+
 	if url := viper.GetString("RETHINKDB_URL"); url != "" {
 		var err error
 		if db, err = r.Connect(r.ConnectOpts{
@@ -47,14 +50,14 @@ func config() {
 			Username: viper.GetString("RETHINKDB_USERNAME"),
 			Password: viper.GetString("RETHINKDB_PASSWORD"),
 		}); err != nil {
-			e.Logger.Fatal(err)
+			log.Fatal(err)
 		}
 	}
 
 	if viper.Get("MQTT_URL") != nil {
 		var debugMessageHandler MQTT.MessageHandler = func(client MQTT.Client, msg MQTT.Message) {
-			e.Logger.Debugf("TOPIC: %s\n", msg.Topic())
-			e.Logger.Debugf("MSG: %s\n", msg.Payload())
+			log.Debugf("TOPIC: %s\n", msg.Topic())
+			log.Debugf("MSG: %s\n", msg.Payload())
 		}
 
 		opts := MQTT.NewClientOptions().AddBroker(viper.GetString("MQTT_URL"))
@@ -67,7 +70,7 @@ func config() {
 
 		mqtt = MQTT.NewClient(opts)
 		if token := mqtt.Connect(); token.Wait() && token.Error() != nil {
-			e.Logger.Fatal(token.Error())
+			log.Fatal(token.Error())
 		}
 	}
 
